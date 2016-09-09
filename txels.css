@@ -1,0 +1,32 @@
+#txels html {
+  font-size: 1.2em;
+  line-height: 1.5em;
+  margin: 0;
+  background: #f0f0ea;
+}
+
+#txels li, #txels p {
+  font-size: 1.5rem;
+}
+
+#txels blockquote p {
+  color: #60a8f6;
+}
+
+#txels section:first-child,
+#txels section:last-child {
+  background: #333;
+}
+
+#txels section:last-child li,
+#txels section:last-child blockquote {
+  color: #ccc;
+}
+
+#txels section:first-child code,
+#txels section:last-child code {
+  color: black;
+  font-size: 70%;
+  padding: 2px;
+  margin: 0 1em;
+}
