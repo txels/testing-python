@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html id="txels">
+<html id="txels" class="override">
   <head>
     <!--
       OK, name your slides:
@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700,400italic' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Fira+Sans::300,300i,400,400i,500,700,700i' async>
 
     <!-- SlidePack basic stylesheets and theme -->
     <link rel="stylesheet" type="text/css" href="slide-pack.css">
@@ -19,23 +20,346 @@
 
 <textarea data-slide-pack>
 
---
+-- heading
 
 # Testing with Python
 
-## Get up to speed into writing valuable automated test suites using Python.
+Get up to speed into writing valuable automated test suites using Python.
 
 > Carles Barrobés `github:txels`
 
+-- whoami center
+
+```
+$ whoami
+carles
+```
+
+-- heading
+
+# Who are you people?
+
+-- center
+
+# How many of you *write code* for a living?
+
+-- center
+
+# How many of you *code in Python* for a living?
+
+-- center
+
+# How many of you *test the code* you write?
+
+-- center
+
+# How many of you are experienced at *writing automated tests*?
+
+-- heading
+
+# Why do we write tests?
+
 --
 
-... slides here ...
+# Some (very few) definitions
+
+- **SUT** (System Under Test)
+- **Regression**
 
 --
+
+# Types of tests
+
+The are many ways to classify tests... E.g.:
+
+- **Unit** test vs **Integration** test
+- **Blackbox** vs **Whitebox** test
+
+--
+
+# Blackbox
+
+![image](https://cloud.githubusercontent.com/assets/874958/18411761/b65103b2-777e-11e6-9f0f-88ab14c84b22.png)
+
+--
+
+# Whitebox
+
+![image](https://cloud.githubusercontent.com/assets/874958/18411777/df8c77c0-777e-11e6-9a1c-18e82408e24f.png)
+
+--
+
+# Valuable tests
+
+A valuable test is a test that:
+
+- Has a **high chance** of **catching a regression** bug.
+- Has a **low chance** of producing a **false positive**.
+- Provides **fast feedback**.
+
+-- heading
+
+# Styles of unit tests
+
+--
+
+## Functional
+
+![](http://i1.wp.com/i.imgur.com/yl79pi7.jpg?resize=502%2C211)
+
+
+--
+
+## State Verification
+
+![](http://i2.wp.com/i.imgur.com/jf6zSIj.jpg?resize=463%2C186)
+
+
+--
+
+## Collaboration Verification
+
+![](http://i1.wp.com/i.imgur.com/p1EmKHG.jpg?resize=455%2C224)
+
+
+--
+
+## Property Based
+
+Its goal is to prove logical properties your system should fulfill.
+
+> Think of it as *functional on steroids*:
+>
+>    For all data matching some specification,
+>    Perform some operations on the data,
+>    Assert something about the result.
+
+
+-- center
+
+# Value proposition for each style
+
+--
+
+## The Functional style:
+
+- Has the best protection against false positives.
+- Among all other parts of the SUT, its input and output tend to change less frequently during refactorings
+
+--
+
+## The State Verification style:
+
+- Is more prone to false positives
+- Is still good enough as long as we verify the SUT’s state via its public API.
+
+> It’s still unlikely to produce false positives because the SUT’s public API tends to stay in place in the face of refactoring or addition of new functionality
+
+--
+
+## The Collaboration Verification style:
+
+This is where the value of unit tests starts to degrade.
+
+- The collaborations the SUT goes through in order to achieve its goal are not part of its public API.
+- Introduces coupling between the tests and the SUT’s implementation details.
+
+
+--
+
+## To get the most of your unit tests
+
+Treat the system you are testing in as black-box manner as possible.
+
+> It will help you avoid coupling tests to the SUT’s implementation details and urge you to find ways to verify the observable state of the system instead.
+
+-- heading
+
+# Let's write us some tests!
+
+--
+
+# The setup
+
+You can follow examples if you have a laptop with:
+
+- Python 3
+- 3rd party libraries: `hamcrest`
+   - if time allows [`ddt`, `hypothesis`]
+
+--
+
+## Keep tests readable
+
+Think of a test as an **executable specification**.
+
+- Computers should be able to run it
+- **Humans** can use them to understand how the system is expected to work
+
+--
+
+## Keep your test suites structured
+
+### Goal: traceability from code to tests
+
+E.g. given a module, it should be trivial to find where its unit tests live.
+
+--
+
+## Readability tips
+
+- Test function names should express intent of the test
+- Keep the test cases small
+- Follow a consistent structure
+
+--
+
+# Anatomy of a test case
+
+```
+def test_something_something_kills_strings():
+
+    # prepare: create test data and set up SUT
+
+    # exercise: call your SUT
+
+    # verify: check for expected outcomes
+```
+
+This pattern is also called **Arrange, Act, Assert**
+
+--
+
+## A concrete example:
+
+
+```
+def test_something_something_kills_strings():
+    test_data = 'hello'
+    sut = StringManipulator()
+
+    result = sut.something_something(test_data)
+
+    self.assertEqual(result, 'hello is now dead')
+```
+
+--
+
+# Tools for writing and running tests
+
+From standard library:
+- `unittest`
+
+Alternatives:
+- `nosetests`
+- `pytest`
+
+
+-- heading
+
+# unittest crash course
+
+Everything you need to know in 2 simple slides
+
+--
+
+## Write tests
+
+```
+from unittest import TestCase
+
+class TestSomething(TestCase):
+    def setUp(self):
+
+    def test_unittest_assertions_actually_work(self):
+        # ...
+        self.assertTrue(True)
+        self.assertFalse(False)
+        self.assertEqual('hello', 'hello')
+        # ...
+
+    def tearDown(self):
+
+```
+
+--
+
+## Run tests
+
+Whole suite:
+```
+$ python -m unittest discover
+```
+
+A specific module:
+```
+$ python -m unittest test.songs.test_stats
+```
+
+A specific test class:
+```
+$ python -m unittest test.songs.test_stats.TestCounter
+```
+
+-- center
+
+## Writing tests for existing code
+
+vs
+
+## Writing new code, guided by tests
+(aka TDD: Test Driven Development)
+
+--
+
+# Your new job
+
+Just hired by a startup that is going to disrupt the music industry.
+
+Core technology: lyrics analysis.
+
+Recommendation to users based on mood, songs they like...
+
+--
+
+# The talk and exercise
+
+```
+git clone git@github.com:txels/testing-python.git
+```
+
+--
+
+# Testable/Maintainable code
+
+Separate code which contains business logic from code that has volatile dependencies (don't mix both).
+
+- Volatile dependencies: work with the outside world, e.g. the database or an external HTTP service.
+- Stable dependencies: self-contained, don’t interact with off-process resources
+
+--
+
+
+![](https://lh3.googleusercontent.com/8SF2oeyuXO7xZmOzHPkxA1KnrDVuuY8FeONLNzpqSaA=w607-h572-no)
+
+--
+
+
+## Credits
+
+- Vladimir Khorikov http://enterprisecraftsmanship.com/
+- pyhamcrest: http://pyhamcrest.readthedocs.io/
+
+
+-- heading
 
 # Thanks!
 
-> Carles Barrobés `github:txels`
+> Carles Barrobés
+>
+> Available for gigs at `carles@barrobes.com`
+>
+> I have some codez at `github:txels`
 
 
 </textarea>

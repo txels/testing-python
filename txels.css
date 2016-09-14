@@ -1,26 +1,77 @@
 #txels html {
-  font-size: 1.2em;
+  font-size: 1em;
   line-height: 1.5em;
   margin: 0;
   background: #f0f0ea;
 }
 
+#txels body {
+  font-weight: 300;
+}
+
+#txels body,
+#txels h1,
+#txels h2,
+#txels h3,
+#txels h4,
+#txels h5 {
+  font-family: "Fira Sans", "Ubuntu", Verdana, sans-serif;
+}
+
+#txels h1 {
+  font-size: 3rem;
+  line-height: 1.2em;
+  font-weight: 700;
+}
+
+#txels h2 {
+  font-size: 2.6rem;
+  line-height: 1.2em;
+  font-weight: bold;
+}
+
+#txels h3 {
+  font-size: 2.4rem;
+  line-height: 1.2em;
+}
+
+#txels h4,
+#txels h5 {
+  font-size: 2.2rem;
+  line-height: 1.2em;
+}
+
 #txels li, #txels p {
-  font-size: 1.5rem;
+  font-size: 2.2rem;
+  margin: 0;
+}
+
+#txels ul {
+  list-style-position: unset;
+  margin-left: 2em;
+}
+
+#txels blockquote {
+  border-left: 8px solid lightgray;
+  padding-left: 2em;
+  font-style: italic;
+  font-weight: 200;
 }
 
 #txels blockquote p {
-  color: #60a8f6;
+  /*color: #60a8f6;*/
+  color: gray;
 }
 
-#txels section:first-child,
-#txels section:last-child {
-  background: #333;
-}
-
-#txels section:last-child li,
-#txels section:last-child blockquote {
-  color: #ccc;
+#txels section:not(.heading) {
+  -webkit-align-items: left;
+       -ms-flex-align: left;
+          align-items: left;
+  -webkit-justify-content: left;
+            -ms-flex-pack: left;
+          justify-content: left;
+  padding: 4em 15vw;
+  min-width: 600px;
 }
 
 #txels section:first-child code,
@@ -30,3 +81,37 @@
   padding: 2px;
   margin: 0 1em;
 }
+
+#txels pre code {
+  font-size: 1.5rem;
+}
+
+
+/* Styles for special pages */
+#txels section.whoami pre code {
+  font-size: 2rem;
+}
+
+#txels section.center {
+  -webkit-align-items: center;
+       -ms-flex-align: center;
+          align-items: center;
+  -webkit-justify-content: center;
+            -ms-flex-pack: center;
+          justify-content: center;
+}
+
+#txels section.heading,
+#txels section.heading {
+  background: #333;
+}
+
+#txels section.heading h1,
+#txels section.heading h2,
+#txels section.heading li,
+#txels section.heading pre,
+#txels section.heading p
+{
+  color: #ddd;
+}
+
